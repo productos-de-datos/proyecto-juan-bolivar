@@ -12,11 +12,24 @@ En luigi llame las funciones que ya creo.
 
 """
 
+
+import sys
 from ingest_data import *
 from transform_data import *
 from clean_data import *
 from compute_daily_prices import * 
-from compute_monthly_prices import * 
+from compute_monthly_prices import *
+sys.path.append('src/visualization')
+sys.path.append('src/features')
+sys.path.append('src/models')
+
+from make_daily_prices_plot import *
+from make_monthly_prices_plot import *
+from make_features import *
+from train_daily_model import *
+from make_forecasts import *
+
+
 import luigi
 
 class get_data(luigi.Task):
@@ -47,6 +60,13 @@ class calculate_data(luigi.Task):
     def run(self):
         compute_daily_prices()
         compute_monthly_prices()
+        make_daily_prices_plot()
+        make_monthly_prices_plot()
+        make_features()
+        train_daily_model()
+        make_forecasts()
+        
+        
         
 if __name__ == "__main__":
     import doctest
