@@ -13,10 +13,17 @@ def ingest_data():
     descarga debe realizarse usando únicamente funciones de Python.
 
     """
-    raise NotImplementedError("Implementar esta función")
+
+
+    import urllib.request
+    for year in range(1995,2022):
+        try:
+            urllib.request.urlretrieve("https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls/" + str(year) + ".xlsx?raw=true", "data_lake/landing/" + str(year) +".xlsx")
+        except:
+            urllib.request.urlretrieve("https://github.com/jdvelasq/datalabs/blob/master/datasets/precio_bolsa_nacional/xls/" + str(year) + ".xls?raw=true", "data_lake/landing/" + str(year) +".xls")
 
 
 if __name__ == "__main__":
     import doctest
-
     doctest.testmod()
+    ingest_data()

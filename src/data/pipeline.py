@@ -12,11 +12,44 @@ En luigi llame las funciones que ya creo.
 
 """
 
-if __name__ == "__main__":
+from ingest_data import *
+from transform_data import *
+from clean_data import *
+from compute_daily_prices import * 
+from compute_monthly_prices import * 
+import luigi
 
-    raise NotImplementedError("Implementar esta función")
+class get_data(luigi.Task):
+    """
+    Aggregate the count results from the different files
+    """
 
+  
+    def output(self):
+        return luigi.LocalTarget("data_lake/cleansed/precios-horarios.csv")
+
+    def run(self):
+        ingest_data()
+        transform_data()
+        clean_data()
+
+class calculate_data(luigi.Task):
+    """
+    Task to compilate information about monthly means and daily means
+    """
+
+    def requires(self):
+        return get_data()
+
+    def output(self):
+        return luigi.LocalTarget("data_lake/business/precios-diarios.csv")
+
+    def run(self):
+        compute_daily_prices()
+        compute_monthly_prices()
+        
 if __name__ == "__main__":
     import doctest
-
     doctest.testmod()
+    luigi.build([calculate_data()],local_scheduler=True)
+    
