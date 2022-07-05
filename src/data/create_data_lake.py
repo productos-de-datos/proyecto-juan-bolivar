@@ -18,13 +18,21 @@ def create_data_lake():
               |___ forecasts/
 
     ```
-
-
     """
-    raise NotImplementedError("Implementar esta función")
+
+    from pathlib import Path
+    Path("data_lake/landing").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/raw").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/cleansed").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/business").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/business/reports/figures").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/business/features").mkdir(parents=True, exist_ok=True)
+    Path("data_lake/business/forecasts").mkdir(parents=True, exist_ok=True)
+    
+    #raise NotImplementedError("Implementar esta función")
 
 
 if __name__ == "__main__":
     import doctest
-
+    create_data_lake()
     doctest.testmod()
